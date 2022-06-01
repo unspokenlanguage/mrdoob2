@@ -273,7 +273,7 @@
 				}
 			}
 		</script>
-
+		
         <section id="loading-screen">
 			<p id="loaded"></p>
 			<div id="loader"></div>
@@ -424,7 +424,7 @@
 						const mesh = new THREE.Mesh( geometry, material );
 						reticle.matrix.decompose( mesh.position, mesh.quaternion, mesh.scale );
 						mesh.scale.y = Math.random() * 2 + 1;
-						scene.add( mesh );
+						//scene.add( mesh );
 
 					}
 
@@ -471,6 +471,7 @@
 							obj = gltf.scene;
 							model.position.set( 0, -3, -6);
 							model.scale.set( 0, 0, 0);
+							model.rotation.set(0,-40,0)
 							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
 							//console.log(gltf.scene)
 							//cubes77.push(gltf.scene)
@@ -578,7 +579,7 @@
 
 							const hit = hitTestResults[ 0 ];
 
-							reticle.visible = true;
+							reticle.visible = false;
 							reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
 
 						} else {
