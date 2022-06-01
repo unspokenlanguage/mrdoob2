@@ -254,9 +254,11 @@
 				color: #000000;
 				background-color: rgba(0,255,255,0.75);
 			}
+
 		</style>
 	</head>
 	<body>
+
         <div class="container" id='container'>
         </div>
 		<!-- Import maps polyfill -->
@@ -281,20 +283,20 @@
 			</div>
 		 </section>
 
+
 		<script type="module">
 
-
-            import * as THREE from 'three';
-			import { TWEEN } from './jsm/libs/tween.module.min.js';
-			//import {Text} from 'https://unpkg.com/troika-three-text@0.39.2/dist/troika-three-text.esm.js?module';
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import * as ThreeMeshUI from "three-mesh-ui";
+			import * as THREE from 'three';
 			import { ARButton } from './jsm/webxr/ARButton.js';
-			import { VRButton } from './jsm/webxr/VRButton.js';
-			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
 			import { RGBELoader } from './jsm/loaders/RGBELoader.js';
-			import { CSS3DRenderer, CSS3DObject } from './jsm/renderers/CSS3DRenderer.js';
 			import Stats from './jsm/libs/stats.module.js'
+			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+			import { TWEEN } from './jsm/libs/tween.module.min.js';
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+
+			let reticle;
+
+
             const stats = Stats()
 			let camera, scene, renderer;
 			let mesh;
@@ -306,29 +308,13 @@
             let model;
 			let GlbObject1;
 			let GlbObject2;
-            let container;    
+            let container;   
 
 			init();
 			animate();
 
-            function onSelect() {
-					console.log('select event triggered')
-					// if ( reticle.visible ) {
-
-					// 	const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
-					// 	const mesh = new THREE.Mesh( geometry, material );
-					// 	reticle.matrix.decompose( mesh.position, mesh.quaternion, mesh.scale );
-					// 	mesh.scale.y = Math.random() * 2 + 1;
-					// 	scene.add( mesh );
-					// }
-
-					// circleScaleAnm(selectCircle1, 1000, isIntersectselectCircle1)
-
-
-            }
-
 			function init() {
-                const progressValue = document.querySelector('.Progressbar__value');
+				const progressValue = document.querySelector('.Progressbar__value');
 			    const progress = document.querySelector('progress');
                 progressValue.style.width =  `${0}%`;
 				progress.value = 0;
@@ -362,12 +348,13 @@
 				};
 
 				loadingManager.onLoad = function () {
+					animateHelmetOnloadComplete(2000)
 					console.log('Loading complete');     
 					const loadingScreen = document.getElementById( 'loading-screen' );
 					loadingScreen.classList.add( 'fade-out' );
 						// optional: remove loader from DOM via event listener
 					loadingScreen.addEventListener( 'transitionend', onTransitionEnd );   
-                    animateHelmetOnloadComplete(2000)
+                    
 
                     //document.body.appendChild( VRButton.createButton( renderer ) );
                     arbutton = ARButton.createButton(renderer, { 
@@ -397,70 +384,66 @@
 					console.log('Error loading');
 				};
 
-				// const loadingManager = new THREE.LoadingManager( () => {
-				// 	const loadingScreen = document.getElementById( 'loading-screen' );
-				// 	//document.getElementById('looader').percentage = 'Status 1';
-
-				// 	console.log("totalNumberLoadedObjects -> " + totalNumberLoadedObjects)
-				// 	//if(totalNumberLoadedObjects == 4){
-				// 		loadingScreen.classList.add( 'fade-out' );
-				// 		// optional: remove loader from DOM via event listener
-				// 		loadingScreen.addEventListener( 'transitionend', onTransitionEnd );
-				// 	//}
-				// } );
-
-				
-
-
-
 				scene = new THREE.Scene();
 
-                camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
-				camera.rotation.y = 0.3928531677427101;
-				scene.add(camera)
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
 
-				const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 0.4 );
+				const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
 				light.position.set( 0.5, 1, 0.25 );
 				scene.add( light );
-				//const texture = new THREE.TextureLoader().load( 'textures/crate.gif' );
 
-				//const geometry = new THREE.BoxGeometry( 200, 200, 200 );
-				//const material = new THREE.MeshBasicMaterial( { map: texture } );
+				//
 
-				//mesh = new THREE.Mesh( geometry, material );
-				//scene.add( mesh );
-
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
+				renderer.xr.enabled = true;
+				container.appendChild( renderer.domElement );
 
-                let options = {
-					requiredFeatures: ['hit-test'],
-					optionalFeatures: ['dom-overlay']
-				}
+				//
+				controls = new OrbitControls( camera, renderer.domElement );
 
-
-				// options.domOverlay = { root: document.getElementById('content')};
-
-				// document.body.appendChild( ARButton.createButton(renderer, options));
-                controller = renderer.xr.getController( 0 );
-				controller.addEventListener( 'select', onSelect );
-				scene.add( controller );
-                
-                controls = new OrbitControls( camera, renderer.domElement );
-
-                controls.addEventListener( 'change', render ); // use if there is no animation loop
+				controls.addEventListener( 'change', render ); // use if there is no animation loop
 				controls.minDistance = 2;
 				controls.maxDistance = 14;
 				controls.target.set( 0, 0, -0.5 );
 				controls.update();
 
-                document.body.appendChild( ARButton.createButton( renderer, { requiredFeatures: [ 'hit-test' ] } ) );
+				
+				document.body.appendChild( ARButton.createButton( renderer, { requiredFeatures: [ 'hit-test' ] } ) );
 
-                
+				//
+
+				const geometry = new THREE.CylinderGeometry( 0.1, 0.1, 0.2, 32 ).translate( 0, 0.1, 0 );
+
+				function onSelect() {
+
+					if ( reticle.visible ) {
+
+						const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
+						const mesh = new THREE.Mesh( geometry, material );
+						reticle.matrix.decompose( mesh.position, mesh.quaternion, mesh.scale );
+						mesh.scale.y = Math.random() * 2 + 1;
+						scene.add( mesh );
+
+					}
+
+				}
+
+				controller = renderer.xr.getController( 0 );
+				controller.addEventListener( 'select', onSelect );
+				scene.add( controller );
+
+				reticle = new THREE.Mesh(
+					new THREE.RingGeometry( 0.15, 0.2, 32 ).rotateX( - Math.PI / 2 ),
+					new THREE.MeshBasicMaterial()
+				);
+				reticle.matrixAutoUpdate = false;
+				reticle.visible = false;
+				scene.add( reticle );
+
+				//
 				var obj;
-
 				new RGBELoader(loadingManager)
 					.setPath( 'textures/equirectangular/' )
 					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
@@ -487,7 +470,7 @@
 						    model = gltf.scene;
 							obj = gltf.scene;
 							model.position.set( 0, -3, -6);
-							model.scale.set( 0.5, 0.5, 0.5);
+							model.scale.set( 0, 0, 0);
 							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
 							//console.log(gltf.scene)
 							//cubes77.push(gltf.scene)
@@ -507,31 +490,6 @@
 				window.addEventListener( 'resize', onWindowResize );
 
 			}
-            function onSessionEvent( event ) {
-
-                const controller = inputSourcesMap.get( event.inputSource );
-
-                if ( controller ) {
-
-                    controller.dispatchEvent( { type: event.type, data: event.inputSource } );
-
-                }
-
-            }
-
-            function animateHelmetOnloadComplete(duration)
-            {
-                new TWEEN.Tween( GlbObject1.scale )
-						.to( { x: 0.5, y: 0.5, z: 0.5 }, duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.onUpdate( render )
-						.start();
-
-                    new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-            }
 
 			function onWindowResize() {
 
@@ -541,6 +499,33 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
 			}
+			function onSessionEvent( event ) {
+
+				const controller = inputSourcesMap.get( event.inputSource );
+
+				if ( controller ) {
+
+					controller.dispatchEvent( { type: event.type, data: event.inputSource } );
+
+				}
+
+			}
+
+			function animateHelmetOnloadComplete(duration)
+			{
+				new TWEEN.Tween( GlbObject1.scale )
+						.to( { x: 0.5, y: 0.5, z: 0.5 }, duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.onUpdate( render )
+						.start();
+
+					new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+					
+			}
+						//
 
 			function animate() {
 
@@ -552,70 +537,68 @@
 				//renderer.render( scene, camera );
                 stats.update();
 				renderer.setAnimationLoop( render );
-			}
 
+			}
 
 			function render( timestamp, frame ) {
 
-                if ( frame ) {
-                    
-                    const referenceSpace = renderer.xr.getReferenceSpace();
-                    const session = renderer.xr.getSession();
+				if ( frame ) {
 
-                    if ( hitTestSourceRequested === false ) {
+					const referenceSpace = renderer.xr.getReferenceSpace();
+					const session = renderer.xr.getSession();
 
-                        session.requestReferenceSpace( 'viewer' ).then( function ( referenceSpace ) {
+					if ( hitTestSourceRequested === false ) {
 
-                            session.requestHitTestSource( { space: referenceSpace } ).then( function ( source ) {
+						session.requestReferenceSpace( 'viewer' ).then( function ( referenceSpace ) {
 
-                                hitTestSource = source;
+							session.requestHitTestSource( { space: referenceSpace } ).then( function ( source ) {
 
-                            } );
+								hitTestSource = source;
 
-                        } );
+							} );
 
-                        session.addEventListener( 'end', function () {
+						} );
 
-                            hitTestSourceRequested = false;
-                            hitTestSource = null;
+						session.addEventListener( 'end', function () {
 
-                        } );
+							hitTestSourceRequested = false;
+							hitTestSource = null;
 
-                        hitTestSourceRequested = true;
+						} );
 
-                    }
+						hitTestSourceRequested = true;
 
-                    if ( hitTestSource ) {
+					}
 
-                        const hitTestResults = frame.getHitTestResults( hitTestSource );
+					if ( hitTestSource ) {
 
-                        if ( hitTestResults.length ) {
+						const hitTestResults = frame.getHitTestResults( hitTestSource );
 
-                            const hit = hitTestResults[ 0 ];
+						if ( hitTestResults.length ) {
 
-                            //reticle.visible = true;
-                            //reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
+							const hit = hitTestResults[ 0 ];
 
-                        } else {
+							reticle.visible = true;
+							reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
 
-                            //reticle.visible = false;
+						} else {
 
-                        }
+							reticle.visible = false;
 
-                    }
-                //circleScaleAnm(selectCircle1,1000, isIntersectselectCircle1)
-            }
-            stats.update();
-            renderer.render( scene, camera );
+						}
 
-        }
-        function onTransitionEnd( event ) {
+					}
+
+				}
+
+				renderer.render( scene, camera );
+
+			}
+   		function onTransitionEnd( event ) {
 				const element = event.target;
 				element.remove();
         }
 
-
 		</script>
-
 	</body>
 </html>

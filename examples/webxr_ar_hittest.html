@@ -1,17 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js ar - hit test</title>
+		<title>three.js webgl - geometry - cube</title>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link type="text/css" rel="stylesheet" href="main.css">
+        <style id="compiled-css" type="text/css">
+
+			
+			html, body {
+				overflow: hidden;
+				margin: 0;
+				width: 100%;
+				height: 100%;
+			}
+			#loading-screen {
+				position: absolute;
+				z-index: 2;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #ffffff;
+				opacity: 1;
+				transition: 1s opacity;
+			}
+			#loading-screen.fade-out {
+				opacity: 0;
+			}
+			#loader {
+				display: block;
+				position: relative;
+				left: 50%;
+				top: 50%;
+				width: 150px;
+				height: 150px;
+				margin: -75px 0 0 -75px;
+				border-radius: 50%;
+				border: 3px solid transparent;
+				border-top-color: #9370DB;
+				-webkit-animation: spin 2s linear infinite;
+				animation: spin 2s linear infinite;
+			}
+			#loader:before {
+				content: '';
+				position: absolute;
+				top: 5px;
+				left: 5px;
+				right: 5px;
+				bottom: 5px;
+				border-radius: 50%;
+				border: 3px solid transparent;
+				border-top-color: #BA55D3;
+				-webkit-animation: spin 3s linear infinite;
+				animation: spin 3s linear infinite;
+			}
+			#loader:after {
+				content: '';
+				position: absolute;
+				top: 15px;
+				left: 15px;
+				right: 15px;
+				bottom: 15px;
+				border-radius: 50%;
+				border: 3px solid transparent;
+				border-top-color: #FF00FF;
+				-webkit-animation: spin 1.5s linear infinite;
+				animation: spin 1.5s linear infinite;
+			}
+			@-webkit-keyframes spin {
+				0%   {
+					-webkit-transform: rotate(0deg);
+					-ms-transform: rotate(0deg);
+					transform: rotate(0deg);
+				}
+				100% {
+					-webkit-transform: rotate(360deg);
+					-ms-transform: rotate(360deg);
+					transform: rotate(360deg);
+				}
+			}
+			@keyframes spin {
+				0%   {
+					-webkit-transform: rotate(0deg);
+					-ms-transform: rotate(0deg);
+					transform: rotate(0deg);
+				}
+				100% {
+					-webkit-transform: rotate(360deg);
+					-ms-transform: rotate(360deg);
+					transform: rotate(360deg);
+				}
+			}
+		  
+			
+			a {
+				color: #8ff;
+			}
+
+			#menu {
+				position: absolute;
+				left : 0px;
+				bottom: 100px;
+				width: 100%;
+				text-align: center;
+			}
+
+			.element {
+				width: 120px;
+				height: 160px;
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				border: 1px solid rgba(127,255,255,0.25);
+				font-family: Helvetica, sans-serif;
+				text-align: center;
+				line-height: normal;
+				cursor: default;
+			}
+
+			.element:hover {
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+				border: 1px solid rgba(127,255,255,0.75);
+			}
+
+				.element .number {
+					position: absolute;
+					top: 20px;
+					right: 20px;
+					font-size: 12px;
+					color: rgba(127,255,255,0.75);
+				}
+
+				.element .symbol {
+					position: absolute;
+					top: 40px;
+					left: 0px;
+					right: 0px;
+					font-size: 60px;
+					font-weight: bold;
+					color: rgba(255,255,255,0.75);
+					text-shadow: 0 0 10px rgba(0,255,255,0.95);
+				}
+
+				.element .details {
+					position: absolute;
+					bottom: 15px;
+					left: 0px;
+					right: 0px;
+					font-size: 12px;
+					color: rgba(127,255,255,0.75);
+				}
+
+			button {
+				color: rgba(127,255,255,0.75);
+				background: transparent;
+				outline: 1px solid rgba(127,255,255,0.75);
+				border: 0px;
+				padding: 5px 10px;
+				cursor: pointer;
+			}
+
+			button:hover {
+				background-color: rgba(0,255,255,0.5);
+			}
+
+			button:active {
+				color: #000000;
+				background-color: rgba(0,255,255,0.75);
+			}
+		</style>
+        <style>
+
+			html {
+				font-size: 14px;
+			}
+			
+			.container {
+				font-size: 14px;
+				color: #666666;
+				font-family: "Open Sans";
+			}
+
+
+			a {
+				color: #8ff;
+			}
+
+			#menu {
+				position: absolute;
+				left : 0px;
+				bottom: 100px;
+				width: 100%;
+				text-align: center;
+			}
+
+			.element {
+				width: 120px;
+				height: 160px;
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				border: 1px solid rgba(127,255,255,0.25);
+				font-family: Helvetica, sans-serif;
+				text-align: center;
+				line-height: normal;
+				cursor: default;
+			}
+
+			.element:hover {
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+				border: 1px solid rgba(127,255,255,0.75);
+			}
+
+				.element .number {
+					position: absolute;
+					top: 20px;
+					right: 20px;
+					font-size: 12px;
+					color: rgba(127,255,255,0.75);
+				}
+
+				.element .symbol {
+					position: absolute;
+					top: 40px;
+					left: 0px;
+					right: 0px;
+					font-size: 60px;
+					font-weight: bold;
+					color: rgba(255,255,255,0.75);
+					text-shadow: 0 0 10px rgba(0,255,255,0.95);
+				}
+
+				.element .details {
+					position: absolute;
+					bottom: 15px;
+					left: 0px;
+					right: 0px;
+					font-size: 12px;
+					color: rgba(127,255,255,0.75);
+				}
+
+			button {
+				color: rgba(127,255,255,0.75);
+				background: transparent;
+				outline: 1px solid rgba(127,255,255,0.75);
+				border: 0px;
+				padding: 5px 10px;
+				cursor: pointer;
+			}
+
+			button:hover {
+				background-color: rgba(0,255,255,0.5);
+			}
+
+			button:active {
+				color: #000000;
+				background-color: rgba(0,255,255,0.75);
+			}
+
+		</style>
 	</head>
 	<body>
 
-		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> ar - hit test<br/>(Chrome Android 81+)
-		</div>
-
+        <div class="container" id='container'>
+        </div>
 		<!-- Import maps polyfill -->
 		<!-- Remove this when import maps will be widely supported -->
 		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
@@ -19,32 +268,121 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"three": "../build/three.module.js"
+					"three": "../build/three.module.js",
+					"three-mesh-ui": "https://unpkg.com/three-mesh-ui@6.4.0/build/three-mesh-ui.module.js"
 				}
 			}
 		</script>
+
+        <section id="loading-screen">
+			<p id="loaded"></p>
+			<div id="loader"></div>
+			<div class="Progressbar">
+				<div class="Progressbar__value"></div>
+				<progress value="0" max="100">100%</progress>
+			</div>
+		 </section>
+
 
 		<script type="module">
 
 			import * as THREE from 'three';
 			import { ARButton } from './jsm/webxr/ARButton.js';
-
-			let container;
-			let camera, scene, renderer;
-			let controller;
+			import { RGBELoader } from './jsm/loaders/RGBELoader.js';
+			import Stats from './jsm/libs/stats.module.js'
+			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+			import { TWEEN } from './jsm/libs/tween.module.min.js';
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
 
 			let reticle;
 
+
+            const stats = Stats()
+			let camera, scene, renderer;
+			let mesh;
+            let arbutton;
+            let controller;
+            let controls;
 			let hitTestSource = null;
 			let hitTestSourceRequested = false;
+            let model;
+			let GlbObject1;
+			let GlbObject2;
+            let container;   
 
 			init();
 			animate();
 
 			function init() {
+				const progressValue = document.querySelector('.Progressbar__value');
+			    const progress = document.querySelector('progress');
+                progressValue.style.width =  `${0}%`;
+				progress.value = 0;
 
-				container = document.createElement( 'div' );
+                document.body.appendChild(stats.dom)
+                container = document.createElement( 'div' );
 				document.body.appendChild( container );
+
+
+				var tag = document.createElement("p");
+				tag.setAttribute("id", "percentage");
+				var text2 = document.createTextNode("--");
+				tag.appendChild(text2);
+				stats.dom.appendChild(tag);
+				
+				
+                var tag = document.createElement("p");
+				tag.setAttribute("id", "percentage");
+				var text2 = document.createTextNode("");
+				tag.appendChild(text2);
+				stats.dom.appendChild(tag);
+				
+
+                const loadingManager = new THREE.LoadingManager();
+
+				
+
+				loadingManager.onStart = function (item, loaded, total) {
+					console.log('Loading startedddddddddd');
+					//setValue(0);
+				};
+
+				loadingManager.onLoad = function () {
+					animateHelmetOnloadComplete(2000)
+					console.log('Loading complete');     
+					const loadingScreen = document.getElementById( 'loading-screen' );
+					loadingScreen.classList.add( 'fade-out' );
+						// optional: remove loader from DOM via event listener
+					loadingScreen.addEventListener( 'transitionend', onTransitionEnd );   
+                    
+
+                    //document.body.appendChild( VRButton.createButton( renderer ) );
+                    arbutton = ARButton.createButton(renderer, { 
+                        requiredFeatures: ['hit-test'],
+                        optionalFeatures: ['dom-overlay'],
+                        domOverlay: { root: document.getElementById('container') } 
+                    })
+                    document.body.appendChild(arbutton);
+                    
+                    
+					//bar.destroy();
+				};
+
+				loadingManager.onProgress = function (item, loaded, total) {            
+					console.log('loadig item' + item + ' -> out of ' + loaded + ' total ' +  total);
+					console.log('Loaded:', Math.round(loaded / total * 100, 2) + '%')
+					document.getElementById("percentage").innerHTML = Math.round(loaded / total * 100, 2) + '%';
+					//setValue(Math.round(loaded / total * 100, 2));
+					progressValue.style.width =  `${Math.round(loaded / total * 100, 2)}%`;
+					progress.value = Math.round(loaded / total * 100, 2);
+					//progressValue.style.width = `${Math.round(loaded / total * 100, 2)}%'';
+  					//progress.value = Math.round(loaded / total * 100, 2);
+					//bar.animate(1.0);
+				};
+
+				loadingManager.onError = function (url) {
+					console.log('Error loading');
+				};
 
 				scene = new THREE.Scene();
 
@@ -63,7 +401,15 @@
 				container.appendChild( renderer.domElement );
 
 				//
+				controls = new OrbitControls( camera, renderer.domElement );
 
+				controls.addEventListener( 'change', render ); // use if there is no animation loop
+				controls.minDistance = 2;
+				controls.maxDistance = 14;
+				controls.target.set( 0, 0, -0.5 );
+				controls.update();
+
+				
 				document.body.appendChild( ARButton.createButton( renderer, { requiredFeatures: [ 'hit-test' ] } ) );
 
 				//
@@ -97,6 +443,49 @@
 				scene.add( reticle );
 
 				//
+				var obj;
+				new RGBELoader(loadingManager)
+					.setPath( 'textures/equirectangular/' )
+					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
+
+						texture.mapping = THREE.EquirectangularReflectionMapping;
+
+						//scene.background = texture;
+						scene.environment = texture;
+
+						render();
+
+						// model
+
+						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/18th_century_cannon/' );
+						loader.load( 'scene.gltf', function ( gltf ) {
+
+							gltf.scene.traverse(function (child) {
+							if (child.isMesh) {
+								
+								    model = child;
+								}
+							
+							})
+						    model = gltf.scene;
+							obj = gltf.scene;
+							model.position.set( 0, -3, -6);
+							model.scale.set( 0, 0, 0);
+							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
+							//console.log(gltf.scene)
+							//cubes77.push(gltf.scene)
+							console.log(model)
+							
+							scene.add( model );
+							GlbObject1 = model ;
+							console.log('Default OBJ -> ' + GlbObject1.name)
+							
+							render();
+
+						} );
+
+					} );
+				//
 
 				window.addEventListener( 'resize', onWindowResize );
 
@@ -110,11 +499,43 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
 			}
+			function onSessionEvent( event ) {
 
-			//
+				const controller = inputSourcesMap.get( event.inputSource );
+
+				if ( controller ) {
+
+					controller.dispatchEvent( { type: event.type, data: event.inputSource } );
+
+				}
+
+			}
+
+			function animateHelmetOnloadComplete(duration)
+			{
+				new TWEEN.Tween( GlbObject1.scale )
+						.to( { x: 0.5, y: 0.5, z: 0.5 }, duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.onUpdate( render )
+						.start();
+
+					new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+					
+			}
+						//
 
 			function animate() {
 
+				requestAnimationFrame( animate );
+                TWEEN.update();
+				// mesh.rotation.x += 0.005;
+				// mesh.rotation.y += 0.01;
+                controls.update();
+				//renderer.render( scene, camera );
+                stats.update();
 				renderer.setAnimationLoop( render );
 
 			}
@@ -173,6 +594,10 @@
 				renderer.render( scene, camera );
 
 			}
+   		function onTransitionEnd( event ) {
+				const element = event.target;
+				element.remove();
+        }
 
 		</script>
 	</body>
