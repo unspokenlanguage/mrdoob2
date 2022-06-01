@@ -293,6 +293,8 @@
 			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
 			import { TWEEN } from './jsm/libs/tween.module.min.js';
 			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { FBXLoader } from './jsm/loaders/FBXLoader.js';
+			const clock = new THREE.Clock();
 
 			let reticle;
 
@@ -308,7 +310,10 @@
             let model;
 			let GlbObject1;
 			let GlbObject2;
+			let GlbObject3;
             let container;   
+			let mixer;
+
 
 			init();
 			animate();
@@ -469,7 +474,7 @@
 							})
 						    model = gltf.scene;
 							obj = gltf.scene;
-							model.position.set( 0, -3, -6);
+							model.position.set( 1.3, -3, -2.5);
 							model.scale.set( 0, 0, 0);
 							model.rotation.set(0,-40,0)
 							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
@@ -488,6 +493,77 @@
 					} );
 				//
 
+
+				new RGBELoader(loadingManager)
+					.setPath( 'textures/equirectangular/' )
+					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
+
+						texture.mapping = THREE.EquirectangularReflectionMapping;
+
+						//scene.background = texture;
+						scene.environment = texture;
+
+						render();
+
+						// model
+
+						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/medieval_mortier/' );
+						loader.load( 'scene.gltf', function ( gltf ) {
+
+							gltf.scene.traverse(function (child) {
+							if (child.isMesh) {
+								
+								    model = child;
+								}
+							
+							})
+						    model = gltf.scene;
+							obj = gltf.scene;
+							model.position.set( 3, -3, -9.5);
+							model.scale.set( 0, 0, 0);
+							model.rotation.set(0,-40,0)
+							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
+							//console.log(gltf.scene)
+							//cubes77.push(gltf.scene)
+							console.log(model)
+							
+							scene.add( model );
+							GlbObject2 = model ;
+							console.log('Default OBJ -> ' + GlbObject2.name)
+							
+							render();
+
+						} );
+
+					} );
+				//
+
+				const loader = new FBXLoader(loadingManager);
+				loader.load( 'models/gltf/kizilay/antitank/antitankfbx.fbx', function ( object ) {
+
+					mixer = new THREE.AnimationMixer( object );
+
+					const action = mixer.clipAction( object.animations[ 0 ] );
+					action.play();
+
+					object.traverse( function ( child ) {
+
+						if ( child.isMesh ) {
+
+							child.castShadow = true;
+							child.receiveShadow = true;
+
+						}
+
+					} );
+
+					object.position.set( 0, -3, -8.5);
+					object.scale.set( 0, 0, 0);
+					object.rotation.set(0,20,0)
+					GlbObject3 = object ;
+					scene.add( object );
+
+				} );
 				window.addEventListener( 'resize', onWindowResize );
 
 			}
@@ -525,11 +601,34 @@
 					.onUpdate( render )
 					.start();
 					
+
+					new TWEEN.Tween( GlbObject2.scale )
+						.to( { x: 0.01, y: 0.01, z: 0.01 }, duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.onUpdate( render )
+						.start();
+
+					new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+
+					new TWEEN.Tween( GlbObject3.scale )
+						.to( { x: 1, y: 1, z: 1 }, duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.onUpdate( render )
+						.start();
+
+					new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
 			}
 						//
 
 			function animate() {
-
+				const delta = clock.getDelta();
+				if ( mixer ) mixer.update( delta );
 				requestAnimationFrame( animate );
                 TWEEN.update();
 				// mesh.rotation.x += 0.005;

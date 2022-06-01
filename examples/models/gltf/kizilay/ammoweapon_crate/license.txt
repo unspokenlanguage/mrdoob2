@@ -1,0 +1,11 @@
+Model Information:
+* title:	AMMO/WEAPON CRATE
+* source:	https://sketchfab.com/3d-models/ammoweapon-crate-134d0d1134b34649a2cc8b8a51d8f0bf
+* author:	mattydee8 (https://sketchfab.com/mattydee8)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "AMMO/WEAPON CRATE" (https://sketchfab.com/3d-models/ammoweapon-crate-134d0d1134b34649a2cc8b8a51d8f0bf) by mattydee8 (https://sketchfab.com/mattydee8) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
