@@ -724,7 +724,7 @@
 				audioLoader = new THREE.AudioLoader();
 					audioLoader.load( 'sounds/Project_Utopia.mp3', function( buffer ) {
 						sound.setBuffer( buffer );
-						sound.setLoop(false);
+						sound.setLoop(true);
 						sound.setVolume(0.1);
 						sound.play();
 					},
