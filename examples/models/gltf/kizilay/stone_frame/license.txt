@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stone Ancient Window / Door Frame (PBR)
+* source:	https://sketchfab.com/3d-models/stone-ancient-window-door-frame-pbr-960dcf3a28224244bbb0cb63f15734a2
+* author:	brainchildpl (https://sketchfab.com/brainchildpl)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stone Ancient Window / Door Frame (PBR)" (https://sketchfab.com/3d-models/stone-ancient-window-door-frame-pbr-960dcf3a28224244bbb0cb63f15734a2) by brainchildpl (https://sketchfab.com/brainchildpl) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

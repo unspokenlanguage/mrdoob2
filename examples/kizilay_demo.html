@@ -323,6 +323,7 @@
 			let GlbObject2;
 			let GlbObject3;
 			let GlbObject4;
+			let GlbObject5;			
 			let videoTextureLayer;
             let container;   
 			let mixer;
@@ -461,6 +462,7 @@
 				const videoScreen = new THREE.Mesh(screen, videoMaterial);
 				videoScreen.position.set(-2.3, -0.4, -4.5)
 				videoScreen.scale.set(0, 0, 0)
+				videoScreen.rotation.set(2 * Math.PI * (-30 / 360), 2 * Math.PI * (0 / 360), 2 * Math.PI * (0 / 360))
 				videoTextureLayer = videoScreen;
 
 				scene.add(videoScreen);
@@ -526,7 +528,7 @@
 							obj = gltf.scene;
 							model.position.set( 1.3, -1.6, -2.5);
 							model.scale.set( 0, 0, 0);
-							model.rotation.set(0,-40,0)
+							model.rotation.set(0,0,0)
 							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
 							//console.log(gltf.scene)
 							//cubes77.push(gltf.scene)
@@ -542,6 +544,51 @@
 
 					} );
 				//
+
+				new RGBELoader()
+					.setPath( 'textures/equirectangular/' )
+					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
+
+						texture.mapping = THREE.EquirectangularReflectionMapping;
+
+						//scene.background = texture;
+						scene.environment = texture;
+
+						render();
+
+						// model
+
+						const loader = new GLTFLoader().setPath( 'models/gltf/kizilay/stone_frame/' );
+						loader.load( 'scene.gltf', function ( gltf ) {
+
+							gltf.scene.traverse(function (child) {
+							if (child.isMesh) {
+								
+								    model = child;
+								}
+							
+							})
+						    model = gltf.scene;
+							obj = gltf.scene;
+							model.position.set( -3.67, -0.6, -4.5 );
+							model.scale.set( 0, 0, 0);
+							model.rotation.set(2 * Math.PI * (60 / 360), 2 * Math.PI * (180 / 360), 2 * Math.PI * (90 / 360))
+							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
+							//console.log(gltf.scene)
+							//cubes77.push(gltf.scene)
+							console.log(model)
+							
+							scene.add( model );
+							GlbObject5 = model ;
+							console.log('Default OBJ -> ' + GlbObject2.name)
+							
+							render();
+
+						} );
+
+					} );
+				//
+
 
 
 				new RGBELoader(loadingManager)
@@ -777,6 +824,18 @@
 
 					new TWEEN.Tween( GlbObject4.scale )
 						.to( { x: 1, y: 1, z: 1 }, duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.onUpdate( render )
+						.start();
+
+					new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+
+
+					new TWEEN.Tween( GlbObject5.scale )
+						.to( { x: 0.054, y: 0.054, z: 0.054 }, duration )
 						.easing( TWEEN.Easing.Exponential.InOut )
 						.onUpdate( render )
 						.start();
