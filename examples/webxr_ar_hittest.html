@@ -394,6 +394,26 @@
 
 				//
 
+				//Load a sound and set it as the Audio object's buffer
+				audioLoader = new THREE.AudioLoader(loadingManager);
+					audioLoader.load( 'sounds/376737_Skullbeatz___Bad_Cat_Maste.mp3', function( buffer ) {
+						sound.setBuffer( buffer );
+						sound.setLoop(true);
+						sound.setVolume(1);
+						sound.play();
+					},
+					// onProgress callback
+					function ( xhr ) {
+						console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+					},
+
+					// onError callback
+					function ( err ) {
+						console.log( 'Un error ha ocurrido' );
+					}
+
+					);
+
 				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
@@ -409,7 +429,7 @@
 				controls.target.set( 0, 0, -0.5 );
 				controls.update();
 
-				
+
 				document.body.appendChild( ARButton.createButton( renderer, { requiredFeatures: [ 'hit-test' ] } ) );
 
 				//
