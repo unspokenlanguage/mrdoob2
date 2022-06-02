@@ -737,7 +737,7 @@
 
 							const hit = hitTestResults[ 0 ];
 
-							reticle.visible = true;
+							reticle.visible = false;
 							reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
 							console.log("hit.getPose( referenceSpace ).transform.matrix -> " + hit.getPose( referenceSpace ).transform.matrix )
 
