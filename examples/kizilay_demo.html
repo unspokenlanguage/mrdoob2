@@ -311,6 +311,7 @@
 			let GlbObject1;
 			let GlbObject2;
 			let GlbObject3;
+			let GlbObject4;
             let container;   
 			let mixer;
 
@@ -567,6 +568,49 @@
 					scene.add( object );
 
 				} );
+
+
+				new RGBELoader(loadingManager)
+					.setPath( 'textures/equirectangular/' )
+					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
+
+						texture.mapping = THREE.EquirectangularReflectionMapping;
+
+						scene.background = texture;
+						scene.environment = texture;
+
+						render();
+
+						// model
+
+						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/gassons_ruin/' );
+						loader.load( 'scene.gltf', function ( gltf ) {
+
+							gltf.scene.traverse(function (child) {
+							if (child.isMesh) {
+								
+								    model = child;
+								}
+							
+							})
+						    model = gltf.scene;
+							obj = gltf.scene;
+							model.position.set( 0, -3.5	, 0);
+							model.scale.set( 0, 0, 0);
+							model.rotation.set(0,-40,0)
+							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
+							//console.log(gltf.scene)
+							//cubes77.push(gltf.scene)
+							console.log(model)
+							
+							scene.add( model );
+							GlbObject4 = model ;
+							console.log('Default OBJ -> ' + GlbObject4.name)
+							
+							render();
+						} );
+
+					} );
 				window.addEventListener( 'resize', onWindowResize );
 
 			}
@@ -617,6 +661,18 @@
 					.start();
 
 					new TWEEN.Tween( GlbObject3.scale )
+						.to( { x: 1, y: 1, z: 1 }, duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.onUpdate( render )
+						.start();
+
+					new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+
+
+					new TWEEN.Tween( GlbObject4.scale )
 						.to( { x: 1, y: 1, z: 1 }, duration )
 						.easing( TWEEN.Easing.Exponential.InOut )
 						.onUpdate( render )

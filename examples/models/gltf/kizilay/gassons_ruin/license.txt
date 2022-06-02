@@ -1,0 +1,11 @@
+Model Information:
+* title:	Gasson's Ruin
+* source:	https://sketchfab.com/3d-models/gassons-ruin-2be3863f121247018e8c6b8cc8d34cae
+* author:	artfletch (https://sketchfab.com/artfletch)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Gasson's Ruin" (https://sketchfab.com/3d-models/gassons-ruin-2be3863f121247018e8c6b8cc8d34cae) by artfletch (https://sketchfab.com/artfletch) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
