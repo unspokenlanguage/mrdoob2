@@ -274,10 +274,7 @@
 	</head>
 	<body>
 
-		<!-- <div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> ar - Lighting Estimation<br/>
-			(Chrome Android 90+)
-		</div> -->
+
         <div class="container" id='container'>
 		</div>
 		
@@ -318,6 +315,7 @@
 			
 		 </section>
 		 <section id ="loading-imgbg">
+			   <p id="info3">   This element has extra spacing   and contains <span>a span element</span>.</p>
 			  <img src="./images/kizilay_muze.jpeg" width="414" height="896" top="400">
 		</section>
 		<script type="module">
@@ -359,8 +357,9 @@
 			var sound;
 
 			
-
-			
+			document.getElementById("info3").innerHTML = "";
+			// let text = document.getElementById("info3").innerHTML;
+				//text = "INSADGASsadg asd gasg asg asdAN";
 
 			init();
 			
@@ -368,6 +367,8 @@
 			
 
 			function init() {
+			
+				
 				const progressValue = document.querySelector('.Progressbar__value');
 			    const progress = document.querySelector('progress');
                 progressValue.style.width =  `${0}%`;
@@ -430,7 +431,8 @@
 					//bar.destroy();
 				};
 
-				loadingManager.onProgress = function (item, loaded, total) {            
+				loadingManager.onProgress = function (item, loaded, total) {     
+					document.getElementById("info3").innerHTML = item       
 					console.log('loadig item' + item + ' -> out of ' + loaded + ' total ' +  total);
 					console.log('Loaded:', Math.round(loaded / total * 100, 2) + '%')
 					document.getElementById("percentage").innerHTML = Math.round(loaded / total * 100, 2) + '%';
@@ -567,6 +569,7 @@
 							scene.add( model );
 							GlbObject1 = model ;
 							console.log('Default OBJ -> ' + GlbObject1.name)
+							document.getElementById("info3").innerHTML = GlbObject1.name
 							
 							render();
 
@@ -611,7 +614,7 @@
 							scene.add( model );
 							GlbObject6 = model ;
 							console.log('Default OBJ -> ' + GlbObject6.name)
-							
+							document.getElementById("info3").innerHTML = GlbObject6.name
 							render();
 
 						} );
@@ -659,7 +662,7 @@
 							scene.add( model );
 							GlbObject7 = model ;
 							console.log('Default OBJ -> ' + GlbObject7.name)
-							
+							document.getElementById("info3").innerHTML = GlbObject7.name
 							render();
 
 						} );
@@ -703,7 +706,7 @@
 							scene.add( model );
 							GlbObject5 = model ;
 							console.log('Default OBJ -> ' + GlbObject5.name)
-							
+							document.getElementById("info3").innerHTML = GlbObject5.name
 							render();
 
 						} );
@@ -749,7 +752,7 @@
 							scene.add( model );
 							GlbObject2 = model ;
 							console.log('Default OBJ -> ' + GlbObject2.name)
-							
+							document.getElementById("info3").innerHTML = GlbObject2.name
 							render();
 
 						} );
@@ -781,6 +784,7 @@
 					object.rotation.set(0,20,0)
 					GlbObject3 = object ;
 					scene.add( object );
+					document.getElementById("info3").innerHTML = GlbObject3.name
 
 				} );
 
@@ -821,7 +825,7 @@
 							scene.add( model );
 							GlbObject4 = model ;
 							console.log('Default OBJ -> ' + GlbObject4.name)
-							
+							document.getElementById("info3").innerHTML = GlbObject4.name
 							render();
 						} );
 
