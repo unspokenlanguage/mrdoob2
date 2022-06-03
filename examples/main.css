@@ -223,7 +223,7 @@ body {
 	position: relative;
 	height: 32px;
 	width: 300px;
-	left: 35%;
+	left: 43%;
 	top: 50%;
 	border-radius: 1000px;
 	background-color: #484848;
@@ -232,6 +232,7 @@ body {
   
   .Progressbar__value {
 	height: 32px;
+	left: 100px;
 	transition: width 0.4s ease-in-out;
 	border-radius: 1000px 0 0 1000px;
 	background-color: #ff4c65;
