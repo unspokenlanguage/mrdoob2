@@ -14,6 +14,21 @@
 				width: 100%;
 				height: 100%;
 			}
+			#loading-imgbg{
+				position: absolute;
+				z-index: 2;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #000000;
+				opacity: 1;
+				transition: 1s opacity;
+			}
+			#loading-imgbg.fade-out {
+				opacity: 0;
+			}
+
 			#loading-screen {
 				position: absolute;
 				z-index: 2;
@@ -21,7 +36,7 @@
 				left: 0;
 				width: 100%;
 				height: 100%;
-				background-color: #ffffff;
+				background-color: #000000;
 				opacity: 1;
 				transition: 1s opacity;
 			}
@@ -292,6 +307,7 @@
 		
         <section id="loading-screen">
 			<p id="loaded"></p>
+
 			<div id="loader"></div>
 		
 			<div class="Progressbar">
@@ -299,9 +315,11 @@
 				<progress value="0" max="100">100%</progress>
 				
 			</div>
+			
 		 </section>
-
-
+		 <section id ="loading-imgbg">
+			  <img src="./images/kizilay_muze.jpeg" width="414" height="896" top="400">
+		</section>
 		<script type="module">
 
 			import * as THREE from 'three';
@@ -391,8 +409,11 @@
 					console.log('Loading complete');     
 					const loadingScreen = document.getElementById( 'loading-screen' );
 					loadingScreen.classList.add( 'fade-out' );
-						// optional: remove loader from DOM via event listener
 					loadingScreen.addEventListener( 'transitionend', onTransitionEnd );   
+
+					const loadingimg = document.getElementById( 'loading-imgbg' );
+					loadingimg.classList.add( 'fade-out' )
+					loadingimg.addEventListener( 'transitionend', onTransitionEnd );   
                     
 
                     //document.body.appendChild( VRButton.createButton( renderer ) );
