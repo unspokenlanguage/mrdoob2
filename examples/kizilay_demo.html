@@ -348,10 +348,12 @@
 			let GlbObject2;
 			let GlbObject3;
 			let GlbObject4;
-			let GlbObject5;			
+			let GlbObject5;	
+			let GlbObject6;		
+			let GlbObject7;			
 			let videoTextureLayer;
             let container;   
-			let mixer;
+			let mixer, mixer2;
 
 			var audioLoader;
 			var sound;
@@ -573,6 +575,98 @@
 					} );
 				//
 
+				new RGBELoader(loadingManager)
+					.setPath( 'textures/equirectangular/' )
+					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
+
+						texture.mapping = THREE.EquirectangularReflectionMapping;
+
+						//scene.background = texture;
+						scene.environment = texture;
+
+						render();
+
+						// model
+
+						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/soldier_2nd_world_war/' );
+						loader.load( 'scene.gltf', function ( gltf ) {
+
+							gltf.scene.traverse(function (child) {
+							if (child.isMesh) {
+								
+								    model = child;
+								}
+							
+							})
+						    model = gltf.scene;
+							obj = gltf.scene;
+							model.position.set( 1.8, -0.99, -6.5);
+							model.scale.set( 0, 0, 0);
+							model.rotation.set(2 * Math.PI * (0 / 360), 2 * Math.PI * (-15 / 360), 2 * Math.PI * (0 / 360))
+							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
+							//console.log(gltf.scene)
+							//cubes77.push(gltf.scene)
+							console.log(model)
+							
+							scene.add( model );
+							GlbObject6 = model ;
+							console.log('Default OBJ -> ' + GlbObject6.name)
+							
+							render();
+
+						} );
+
+					} );
+				//
+
+				new RGBELoader(loadingManager)
+					.setPath( 'textures/equirectangular/' )
+					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
+
+						texture.mapping = THREE.EquirectangularReflectionMapping;
+
+						//scene.background = texture;
+						scene.environment = texture;
+
+						render();
+
+						// model
+
+						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/flag_loop/' );
+						loader.load( 'scene.gltf', function ( gltf ) {
+
+							mixer2 = new THREE.AnimationMixer( gltf.scene );
+							var action = mixer2.clipAction( gltf.animations[ 0 ] );
+							action.play();
+
+							gltf.scene.traverse(function (child) {
+							if (child.isMesh) {
+								
+								    model = child;
+								}
+							
+							})
+						    model = gltf.scene;
+							obj = gltf.scene;
+							model.position.set( 1.4, -1.99, -3.5);
+							model.scale.set( 0, 0, 0);
+							model.rotation.set(2 * Math.PI * (20/ 360), 2 * Math.PI * (-15 / 360), 2 * Math.PI * (0 / 360))
+							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
+							//console.log(gltf.scene)
+							//cubes77.push(gltf.scene)
+							console.log(model)
+							
+							scene.add( model );
+							GlbObject7 = model ;
+							console.log('Default OBJ -> ' + GlbObject7.name)
+							
+							render();
+
+						} );
+
+					} );
+				//
+
 				new RGBELoader()
 					.setPath( 'textures/equirectangular/' )
 					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
@@ -608,7 +702,7 @@
 							
 							scene.add( model );
 							GlbObject5 = model ;
-							console.log('Default OBJ -> ' + GlbObject2.name)
+							console.log('Default OBJ -> ' + GlbObject5.name)
 							
 							render();
 
@@ -873,6 +967,22 @@
 					.onUpdate( render )
 					.start();
 
+					new TWEEN.Tween( GlbObject6.scale )
+						.to( { x: 0.8, y: 0.8, z: 0.8 }, duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.onUpdate( render )
+						.start();
+
+					new TWEEN.Tween( GlbObject7.scale )
+					.to( { x: 0.8, y: 0.8, z: 0.8 }, duration )
+					.easing( TWEEN.Easing.Exponential.InOut )
+					.onUpdate( render )
+					.start();
+
+					new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
 
 					new TWEEN.Tween( videoTextureLayer.scale )
 						.to( { x: 1.4, y: 1.4, z: 1.4 }, duration )
@@ -893,6 +1003,7 @@
 			function animate() {
 				const delta = clock.getDelta();
 				if ( mixer ) mixer.update( delta );
+				if ( mixer2 ) mixer2.update( delta );
 				requestAnimationFrame( animate );
                 TWEEN.update();
 				// mesh.rotation.x += 0.005;
