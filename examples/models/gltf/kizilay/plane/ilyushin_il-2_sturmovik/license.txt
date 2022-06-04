@@ -1,0 +1,11 @@
+Model Information:
+* title:	Ilyushin IL-2 Sturmovik
+* source:	https://sketchfab.com/3d-models/ilyushin-il-2-sturmovik-0d69084abdaa48afb8380dfbf54922a5
+* author:	helijah (https://sketchfab.com/helijah)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Ilyushin IL-2 Sturmovik" (https://sketchfab.com/3d-models/ilyushin-il-2-sturmovik-0d69084abdaa48afb8380dfbf54922a5) by helijah (https://sketchfab.com/helijah) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
