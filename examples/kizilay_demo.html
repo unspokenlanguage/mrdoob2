@@ -359,17 +359,46 @@
 			var sound;
 
 			
+
+			const soundFile = 'sounds/sf_ambi_battlefield_02.mp3'
+			const fftsize = 2048
+			const frequencyRange = {
+				bass: [20, 140],
+				lowMid: [140, 400],
+				mid: [400, 2600],
+				highMid: [2600, 5200],
+				treble: [5200, 14000],
+			}
+			let analyser
+
 			document.getElementById("info3").innerHTML = "";
 			// let text = document.getElementById("info3").innerHTML;
 				//text = "INSADGASsadg asd gasg asg asdAN";
+				// audioLoader = new THREE.AudioLoader();
+				// audioLoader.load( 'sounds/war_environment.mp3', function( buffer ) {
+				// 	sound.setBuffer( buffer );
+				// 	sound.setLoop(true);
+				// 	sound.setVolume(0.05);
+				// 	sound.play();
+				// },
+				// // onProgress callback
+				// function ( xhr ) {
+				// 	console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+				// },
 
+				// // onError callback
+				// function ( err ) {initAudio
+				// 	console.log( 'Un error ha ocurrido' );
+				// }
+
+				// );
 			init();
 			
 			animate();
 			
-
-			function init() {
 			
+			function init() {
+							//Load a sound and set it as the Audio object's buffer
 				
 				const progressValue = document.querySelector('.Progressbar__value');
 			    const progress = document.querySelector('progress');
@@ -465,7 +494,7 @@
 				scene.add(hemiLight);
 
 				var directionalLight = new THREE.DirectionalLight();
-				directionalLight.position.copy(new THREE.Vector3(70, 40, 50));
+				directionalLight.position.copy(new THREE.Vector3(50, 40, -5));
 				directionalLight.castShadow = true;
 				directionalLight.shadowCameraVisible = false;
 				directionalLight.shadowCameraNear = 25;
@@ -490,6 +519,21 @@
 				// create a global audio source
 				sound = new THREE.Audio( listener );
 				camera.add(sound)
+
+
+			    listener = new THREE.AudioListener()
+				camera.add( listener )
+
+			    sound = new THREE.Audio( listener )
+			    audioLoader = new THREE.AudioLoader()
+				analyser = new THREE.AudioAnalyser( sound, fftsize )
+
+				audioLoader.load( soundFile, (buffer) => {
+					sound.setBuffer( buffer )
+					sound.setLoop( true )
+					sound.setVolume( 0.3 )
+					sound.play()
+				})
 
 				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -921,25 +965,7 @@
 			}
 
 			function initAudio(){
-				console.log("hellooo audioo")
-				//Load a sound and set it as the Audio object's buffer
-				audioLoader.load( 'sounds/war_environment.mp3', function( buffer ) {
-						sound.setBuffer( buffer );
-						sound.setLoop(true);
-						sound.setVolume(0.1);
-						sound.play();
-					},
-					// onProgress callback
-					function ( xhr ) {
-						console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-					},
-
-					// onError callback
-					function ( err ) {
-						console.log( 'Un error ha ocurrido' );
-					}
-
-					);
+				
 			}
 		
 			function onWindowResize() {
@@ -965,25 +991,7 @@
 			function animateHelmetOnloadComplete(duration)
 			{
 
-				//Load a sound and set it as the Audio object's buffer
-				audioLoader = new THREE.AudioLoader();
-					audioLoader.load( 'sounds/war_environment.mp3', function( buffer ) {
-						sound.setBuffer( buffer );
-						sound.setLoop(true);
-						sound.setVolume(0.05);
-						sound.play();
-					},
-					// onProgress callback
-					function ( xhr ) {
-						console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-					},
 
-					// onError callback
-					function ( err ) {
-						console.log( 'Un error ha ocurrido' );
-					}
-
-					);
 				
 					new TWEEN.Tween( GlbObject1.scale )
 							.to( { x: 0.5, y: 0.5, z: 0.5 }, duration )
