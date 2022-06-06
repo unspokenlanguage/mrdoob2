@@ -151,13 +151,13 @@
             ],
             "name" : "Sketchfab_model",
             "rotation" : [
-                -0.5163523554801941,
+                0.8655663728713989,
                 0,
                 0,
-                0.8563761115074158
+                -0.5007942914962769
             ],
             "translation" : [
-                44.12525939941406,
+                176.25387573242188,
                 0,
                 0
             ]
@@ -1846,9 +1846,9 @@
         {
             "bufferView" : 100,
             "componentType" : 5126,
-            "count" : 261,
+            "count" : 265,
             "max" : [
-                10.833333333333334
+                11
             ],
             "min" : [
                 0
@@ -1858,15 +1858,15 @@
         {
             "bufferView" : 101,
             "componentType" : 5126,
-            "count" : 261,
+            "count" : 265,
             "type" : "VEC3"
         },
         {
             "bufferView" : 102,
             "componentType" : 5126,
-            "count" : 264,
+            "count" : 267,
             "max" : [
-                10.958333333333334
+                11.083333333333334
             ],
             "min" : [
                 0
@@ -1876,7 +1876,7 @@
         {
             "bufferView" : 103,
             "componentType" : 5126,
-            "count" : 264,
+            "count" : 267,
             "type" : "VEC4"
         }
     ],
@@ -2383,28 +2383,28 @@
         },
         {
             "buffer" : 0,
-            "byteLength" : 1044,
+            "byteLength" : 1060,
             "byteOffset" : 1499940
         },
         {
             "buffer" : 0,
-            "byteLength" : 3132,
-            "byteOffset" : 1500984
+            "byteLength" : 3180,
+            "byteOffset" : 1501000
         },
         {
             "buffer" : 0,
-            "byteLength" : 1056,
-            "byteOffset" : 1504116
+            "byteLength" : 1068,
+            "byteOffset" : 1504180
         },
         {
             "buffer" : 0,
-            "byteLength" : 4224,
-            "byteOffset" : 1505172
+            "byteLength" : 4272,
+            "byteOffset" : 1505248
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 1509396,
+            "byteLength" : 1509520,
             "uri" : "scene.bin"
         }
     ]

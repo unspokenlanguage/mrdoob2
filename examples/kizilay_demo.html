@@ -351,6 +351,7 @@
 			let GlbObject6;		
 			let GlbObject7;	
 			let GlbObject8;			
+			let GlbObject9;			
 			let videoTextureLayer;
             let container;   
 			let mixer, mixer2;
@@ -481,7 +482,7 @@
 
 				scene = new THREE.Scene();
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
 
 				// const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
 				// light.position.set( 0.5, 1, 0.25 );
@@ -966,6 +967,51 @@ mixer2 = new THREE.AnimationMixer( gltf.scene );
 
 					} );
 
+
+					// new RGBELoader(loadingManager)
+					// .setPath( 'textures/equirectangular/' )
+					// .load( 'royal_esplanade_1k.hdr', function ( texture ) {
+
+					// 	texture.mapping = THREE.EquirectangularReflectionMapping;
+
+					// 	//scene.background = texture;
+					// 	scene.environment = texture;
+
+					// 	render();
+
+					// 	// model
+
+					// 	const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/blast/' );
+					// 	loader.load( 'explosion.gltf', function ( gltf ) {
+
+						
+					// 		gltf.scene.traverse(function (child) {
+					// 		if (child.isMesh) {
+					// 				model = child;
+					// 				child.castShadow = false; 
+					// 				child.receiveShadow = true; 
+					// 			}
+							
+					// 		})
+					// 	    model = gltf.scene;
+					// 		obj = gltf.scene;
+					// 		model.position.set( 0, -0.9, -8.9);
+					// 		model.scale.set( 0, 0, 0);
+					// 		model.rotation.set(0,-40,0)
+					// 		//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
+					// 		//console.log(gltf.scene)
+					// 		//cubes77.push(gltf.scene)
+					// 		console.log(model)
+							
+					// 		scene.add( model );
+					// 		GlbObject9 = model ;
+					// 		console.log('Default OBJ -> ' + GlbObject9.name)
+					// 		document.getElementById("info3").innerHTML = GlbObject9.name
+					// 		render();
+					// 	} );
+
+					// } );
+
 					//initAudio()
 				// // create an AudioListener and add it to the camera
 				// const listener = new THREE.AudioListener();
@@ -1093,8 +1139,20 @@ mixer2 = new THREE.AnimationMixer( gltf.scene );
 					.start();
 					
 
-					// new TWEEN.Tween( GlbObject8.scale )
-					// .to( { x: 1, y: 1, z: 1 }, duration )
+					new TWEEN.Tween( GlbObject8.scale )
+					.to( { x: 1, y: 1, z: 1 }, duration )
+					.easing( TWEEN.Easing.Exponential.InOut )
+					.onUpdate( render )
+					.start();
+
+					new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+
+
+					// new TWEEN.Tween( GlbObject9.scale )
+					// .to( { x: 0.001, y: 0.001, z: 0.001 }, duration )
 					// .easing( TWEEN.Easing.Exponential.InOut )
 					// .onUpdate( render )
 					// .start();
@@ -1103,7 +1161,6 @@ mixer2 = new THREE.AnimationMixer( gltf.scene );
 					// .to( {}, duration * 2 )
 					// .onUpdate( render )
 					// .start();
-
 
 
 					new TWEEN.Tween( videoTextureLayer.scale )
