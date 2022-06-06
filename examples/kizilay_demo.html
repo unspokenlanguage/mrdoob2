@@ -987,49 +987,49 @@
 					} );
 
 
-					// new RGBELoader(loadingManager)
-					// .setPath( 'textures/equirectangular/' )
-					// .load( 'royal_esplanade_1k.hdr', function ( texture ) {
+					new RGBELoader(loadingManager)
+					.setPath( 'textures/equirectangular/' )
+					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
 
-					// 	texture.mapping = THREE.EquirectangularReflectionMapping;
+						texture.mapping = THREE.EquirectangularReflectionMapping;
 
-					// 	//scene.background = texture;
-					// 	scene.environment = texture;
+						//scene.background = texture;
+						scene.environment = texture;
 
-					// 	render();
+						render();
 
-					// 	// model
+						// model
 
-					// 	const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/blast/' );
-					// 	loader.load( 'explosion.gltf', function ( gltf ) {
+						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/military_strecher/' );
+						loader.load( 'scene.gltf', function ( gltf ) {
 
 						
-					// 		gltf.scene.traverse(function (child) {
-					// 		if (child.isMesh) {
-					// 				model = child;
-					// 				child.castShadow = false; 
-					// 				child.receiveShadow = true; 
-					// 			}
+							gltf.scene.traverse(function (child) {
+							if (child.isMesh) {
+									model = child;
+									child.castShadow = false; 
+									child.receiveShadow = true; 
+								}
 							
-					// 		})
-					// 	    model = gltf.scene;
-					// 		obj = gltf.scene;
-					// 		model.position.set( 0, -0.9, -8.9);
-					// 		model.scale.set( 0, 0, 0);
-					// 		model.rotation.set(0,-40,0)
-					// 		//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
-					// 		//console.log(gltf.scene)
-					// 		//cubes77.push(gltf.scene)
-					// 		console.log(model)
+							})
+						    model = gltf.scene;
+							obj = gltf.scene;
+							model.position.set( 0, -1.7, -1.5);
+							model.scale.set( 0, 0, 0);
+							model.rotation.set(0,-40,0)
+							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
+							//console.log(gltf.scene)
+							//cubes77.push(gltf.scene)
+							console.log(model)
 							
-					// 		scene.add( model );
-					// 		GlbObject9 = model ;
-					// 		console.log('Default OBJ -> ' + GlbObject9.name)
-					// 		document.getElementById("info3").innerHTML = GlbObject9.name
-					// 		render();
-					// 	} );
+							scene.add( model );
+							GlbObject9 = model ;
+							console.log('Default OBJ -> ' + GlbObject9.name)
+							document.getElementById("info3").innerHTML = GlbObject9.name
+							render();
+						} );
 
-					// } );
+					} );
 
 					//initAudio()
 				// // create an AudioListener and add it to the camera
@@ -1170,16 +1170,16 @@
 					.start();
 
 
-					// new TWEEN.Tween( GlbObject9.scale )
-					// .to( { x: 0.001, y: 0.001, z: 0.001 }, duration )
-					// .easing( TWEEN.Easing.Exponential.InOut )
-					// .onUpdate( render )
-					// .start();
+					new TWEEN.Tween( GlbObject9.scale )
+					.to( { x: 0.5, y: 0.5, z: 0.5 }, duration )
+					.easing( TWEEN.Easing.Exponential.InOut )
+					.onUpdate( render )
+					.start();
 
-					// new TWEEN.Tween( this )
-					// .to( {}, duration * 2 )
-					// .onUpdate( render )
-					// .start();
+					new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
 
 
 					new TWEEN.Tween( videoTextureLayer.scale )
