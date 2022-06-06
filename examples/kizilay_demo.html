@@ -354,7 +354,7 @@
 			let GlbObject9;			
 			let videoTextureLayer;
             let container;   
-			let mixer, mixer2;
+			let mixer, mixer2, mixer3;
 
 			var audioLoader;
 			var sound;
@@ -535,6 +535,24 @@
 					sound.setVolume( 0.1)
 					sound.play()
 				})
+
+
+				// create an AudioListener and add it to the camera
+				const listener2 = new THREE.AudioListener();
+				camera.add( listener2 );
+
+				// create the PositionalAudio object (passing in the listener)
+				const sound2 = new THREE.PositionalAudio( listener2 );
+
+				// load a sound and set it as the PositionalAudio object's buffer
+				const audioLoader2 = new THREE.AudioLoader();
+				audioLoader2.load( 'sounds/plane_audio.mp3', function( buffer ) {
+					sound2.setBuffer( buffer );
+					sound2.setRefDistance( 20 );
+					sound2.setLoop( true )
+					sound2.setVolume( 0.02)
+					sound2.play();
+				});
 
 				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -888,11 +906,11 @@
 
 						// model
 
-						const loader2 = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/new_plane/' );
-						loader2.load( 'scene.gltf', function ( gltf ) {
-mixer2 = new THREE.AnimationMixer( gltf.scene );
-							var action = mixer2.clipAction( gltf.animations[ 0 ] );
-							action.play();
+						const loader3 = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/new_plane/' );
+						loader3.load( 'scene.gltf', function ( gltf ) {
+							mixer3 = new THREE.AnimationMixer( gltf.scene );
+							var action2 = mixer3.clipAction( gltf.animations[ 0 ] );
+							action2.play();
 							gltf.scene.traverse(function (child) {
 							if (child.isMesh) {
 									child.castShadow = true; 
@@ -903,7 +921,7 @@ mixer2 = new THREE.AnimationMixer( gltf.scene );
 							})
 						    model = gltf.scene;
 							obj = gltf.scene;
-							model.position.set( 3, 7, -4);
+							model.position.set( 3, 12, -9);
 							model.scale.set( 0.2, 0.2, 0.2);
 							// model.rotation.set(0,-40,0)
 							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
@@ -912,6 +930,7 @@ mixer2 = new THREE.AnimationMixer( gltf.scene );
 							console.log(model)
 							
 							scene.add( model );
+							model.add(sound2)
 							GlbObject8 = model ;
 							console.log('Default OBJ -> ' + GlbObject8.name)
 							document.getElementById("info3").innerHTML = GlbObject8.name
@@ -1183,6 +1202,7 @@ mixer2 = new THREE.AnimationMixer( gltf.scene );
 				const delta = clock.getDelta();
 				if ( mixer ) mixer.update( delta );
 				if ( mixer2 ) mixer2.update( delta );
+				if ( mixer3 ) mixer3.update( delta );
 				requestAnimationFrame( animate );
                 TWEEN.update();
 				// mesh.rotation.x += 0.005;
