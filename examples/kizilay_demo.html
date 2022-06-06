@@ -353,7 +353,7 @@
 			let GlbObject8;			
 			let videoTextureLayer;
             let container;   
-			let mixer, mixer2, mixer3;
+			let mixer, mixer2;
 
 			var audioLoader;
 			var sound;
@@ -538,7 +538,7 @@
 				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.setClearColor(0x6698FF, 1.0);
+				//renderer.setClearColor(0x6698FF, 1.0);
 				renderer.shadowMap.enabled = true;
 				renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
@@ -717,8 +717,8 @@
 						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/flag_loop/' );
 						loader.load( 'scene.gltf', function ( gltf ) {
 
-							mixer3 = new THREE.AnimationMixer( gltf.scene );
-							var action = mixer3.clipAction( gltf.animations[ 0 ] );
+							mixer2 = new THREE.AnimationMixer( gltf.scene );
+							var action = mixer2.clipAction( gltf.animations[ 0 ] );
 							action.play();
 
 							gltf.scene.traverse(function (child) {
@@ -889,11 +889,9 @@
 
 						const loader2 = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/new_plane/' );
 						loader2.load( 'scene.gltf', function ( gltf ) {
-							
-							mixer2 = new THREE.AnimationMixer( gltf.scene );
+mixer2 = new THREE.AnimationMixer( gltf.scene );
 							var action = mixer2.clipAction( gltf.animations[ 0 ] );
 							action.play();
-
 							gltf.scene.traverse(function (child) {
 							if (child.isMesh) {
 									child.castShadow = true; 
@@ -904,8 +902,8 @@
 							})
 						    model = gltf.scene;
 							obj = gltf.scene;
-							model.position.set( 3, 7, -15);
-							model.scale.set( 0.16, 0.16, 0.16);
+							model.position.set( 3, 7, -4);
+							model.scale.set( 0.2, 0.2, 0.2);
 							// model.rotation.set(0,-40,0)
 							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
 							//console.log(gltf.scene)
