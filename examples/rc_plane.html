@@ -282,11 +282,11 @@
 		<!-- <video id="video" loop muted crossOrigin="anonymous" playsinline style="display:none">
 			<iframe width="560" height="315" src="https://www.youtube.com/embed/FjJdtfkbRdA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		</video> -->
-
+<!-- 
 		<video id="video" loop muted crossOrigin="anonymous" playsinline style="display:none">
 			<source src="textures/kizilay/canakkale_savasi.webp">
 				<source src="textures/kizilay/canakkale_savasi.mp4">
-		</video>
+		</video> -->
 		
 		<!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/FjJdtfkbRdA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
 		<!-- Import maps polyfill -->
@@ -315,7 +315,6 @@
 		 </section>
 		 <section id ="loading-imgbg">
 			   <p id="info3"></p>
-			  <img src="./images/kizilay_muze.jpeg" width="414" height="896" top="400">
 		</section>
 		<script type="module">
 
@@ -360,16 +359,7 @@
 
 			
 
-			const soundFile = 'sounds/sf_ambi_battlefield_02.mp3'
-			const fftsize = 2048
-			const frequencyRange = {
-				bass: [20, 140],
-				lowMid: [140, 400],
-				mid: [400, 2600],
-				highMid: [2600, 5200],
-				treble: [5200, 14000],
-			}
-			let analyser
+
 
 			document.getElementById("info3").innerHTML = "";
 			// let text = document.getElementById("info3").innerHTML;
@@ -428,7 +418,7 @@
 
 				container.addEventListener( 'click', function () {
 
-					video.play();
+					//video.play();
 
 				} );
 
@@ -487,14 +477,14 @@
 				// light.position.set( 0.5, 1, 0.25 );
 				// scene.add( light );
 				// Create the sun light and add it to the scene
-				var hemiLight = new THREE.HemisphereLight(0xff4444, 0x44ff44, 0.6);
+				var hemiLight = new THREE.HemisphereLight(0xff4444, 0x44ff44, 10);
 				hemiLight.position.copy(new THREE.Vector3(0, 500, 0));
 
 				hemiLight.name = 'hemiLight';
 				scene.add(hemiLight);
 
 				var directionalLight = new THREE.DirectionalLight();
-				directionalLight.position.copy(new THREE.Vector3(50, 40, -5));
+				directionalLight.position.copy(new THREE.Vector3(50, 40, -1));
 				directionalLight.castShadow = true;
 				directionalLight.shadowCameraVisible = false;
 				directionalLight.shadowCameraNear = 25;
@@ -524,16 +514,16 @@
 			    listener = new THREE.AudioListener()
 				camera.add( listener )
 
-			    sound = new THREE.Audio( listener )
-			    audioLoader = new THREE.AudioLoader()
-				analyser = new THREE.AudioAnalyser( sound, fftsize )
+			    // sound = new THREE.Audio( listener )
+			    // audioLoader = new THREE.AudioLoader()
+				// analyser = new THREE.AudioAnalyser( sound, fftsize )
 
-				audioLoader.load( soundFile, (buffer) => {
-					sound.setBuffer( buffer )
-					sound.setLoop( true )
-					sound.setVolume( 0.1)
-					sound.play()
-				})
+				// audioLoader.load( soundFile, (buffer) => {
+				// 	sound.setBuffer( buffer )
+				// 	sound.setLoop( true )
+				// 	sound.setVolume( 0.1)
+				// 	sound.play()
+				// })
 
 
 				// create an AudioListener and add it to the camera
@@ -547,9 +537,9 @@
 				const audioLoader2 = new THREE.AudioLoader();
 				audioLoader2.load( 'sounds/plane_audio.mp3', function( buffer ) {
 					sound2.setBuffer( buffer );
-					sound2.setRefDistance( 20 );
+					// sound2.setRefDistance( 20 );
 					sound2.setLoop( true )
-					sound2.setVolume( 0.1)
+					sound2.setVolume( 0.2)
 					sound2.play();
 				});
 
@@ -567,8 +557,8 @@
 				controls = new OrbitControls( camera, renderer.domElement );
 
 				controls.addEventListener( 'change', render ); // use if there is no animation loop
-				controls.minDistance = 2;
-				controls.maxDistance = 14;
+				controls.minDistance = -20;
+				controls.maxDistance = 100;
 				controls.target.set( 0, 0, -0.5 );
 				controls.update();
 
@@ -577,22 +567,7 @@
 
 				//
 
-				const video = document.getElementById( 'video' );
-				video.play();
-
-				//Create your video texture:
-				const videoTexture = new THREE.VideoTexture(video);
-				const videoMaterial =  new THREE.MeshBasicMaterial( {map: videoTexture, side: THREE.FrontSide, toneMapped: false} );
-				//Create screen
-				const screen = new THREE.PlaneGeometry(2, 1);
-				const videoScreen = new THREE.Mesh(screen, videoMaterial);
-				videoScreen.position.set(-2.22, -0.45, -4.5)
-				videoScreen.scale.set(0, 0, 0)
-				videoScreen.rotation.set(2 * Math.PI * (-30 / 360), 2 * Math.PI * (0 / 360), 2 * Math.PI * (0 / 360))
-				videoTextureLayer = videoScreen;
-
-				scene.add(videoScreen);
-
+				
 
 				const geometry = new THREE.CylinderGeometry( 0.1, 0.1, 0.2, 32 ).translate( 0, 0.1, 0 );
 
@@ -627,51 +602,19 @@
 
 				//
 				var obj;
-				new RGBELoader(loadingManager)
-					.setPath( 'textures/equirectangular/' )
-					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
 
-						texture.mapping = THREE.EquirectangularReflectionMapping;
-
-						//scene.background = texture;
-						scene.environment = texture;
-
-						render();
-
-						// model
-
-						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/18th_century_cannon/' );
-						loader.load( 'scene.gltf', function ( gltf ) {
-
-							gltf.scene.traverse(function (child) {
-							if (child.isMesh) {
-									child.castShadow = true; 
-									child.receiveShadow = true; 
-								    model = child;
-								}
-							
-							})
-						    model = gltf.scene;
-							obj = gltf.scene;
-							model.position.set( 1.6, -1.4, -1.9);
-							model.scale.set( 0, 0, 0);
-							model.rotation.set(0,0,0)
-							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
-							//console.log(gltf.scene)
-							//cubes77.push(gltf.scene)
-							console.log(model)
-							
-							scene.add( model );
-							GlbObject1 = model ;
-							console.log('Default OBJ -> ' + GlbObject1.name)
-							document.getElementById("info3").innerHTML = GlbObject1.name
-							
-							render();
-
-						} );
-
-					} );
-				//
+				// var geometry2 = new THREE.PlaneGeometry( 1000, 1000, 1, 1 );
+				// var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+				// var floor = new THREE.Mesh( geometry2, material );
+				// floor.position.set(0,-10,0,)
+				// floor.material.side = THREE.DoubleSide;
+				// floor.rotation.x = Math.PI * (180 / 360);
+				// floor.castShadow = true; 
+				// floor.receiveShadow = true; 
+				// floor.material.colorWrite = false;
+				// floor.material.transparent = true; // only needed if there are other transparent objects
+				// floor.renderOrder = Infinity;
+				// scene.add( floor ); 
 
 				new RGBELoader(loadingManager)
 					.setPath( 'textures/equirectangular/' )
@@ -686,230 +629,13 @@
 
 						// model
 
-						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/soldier_2nd_world_war/' );
-						loader.load( 'scene.gltf', function ( gltf ) {
-
-
-							gltf.scene.traverse(function (child) {
-							if (child.isMesh) {
-								child.castShadow = true; 
-									child.receiveShadow = true; 
-								    model = child;
-								}
-							
-							})
-						    model = gltf.scene;
-							obj = gltf.scene;
-							model.position.set( 1.8, -1.15, -6.5);
-							model.scale.set( 0, 0, 0);
-							model.rotation.set(2 * Math.PI * (0 / 360), 2 * Math.PI * (-15 / 360), 2 * Math.PI * (0 / 360))
-							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
-							//console.log(gltf.scene)
-							//cubes77.push(gltf.scene)
-							console.log(model)
-							
-							scene.add( model );
-							GlbObject6 = model ;
-							console.log('Default OBJ -> ' + GlbObject6.name)
-							document.getElementById("info3").innerHTML = GlbObject6.name
-							render();
-
-						} );
-
-					} );
-				//
-
-				new RGBELoader(loadingManager)
-					.setPath( 'textures/equirectangular/' )
-					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
-
-						texture.mapping = THREE.EquirectangularReflectionMapping;
-
-						//scene.background = texture;
-						scene.environment = texture;
-
-						render();
-
-						// model
-
-						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/flag_loop/' );
-						loader.load( 'scene.gltf', function ( gltf ) {
-
-							mixer2 = new THREE.AnimationMixer( gltf.scene );
-							var action = mixer2.clipAction( gltf.animations[ 0 ] );
+						const loader3 = new GLTFLoader(loadingManager).setPath( 'models/personal/' );
+						loader3.load( '_remote_plane.gltf', function ( gltf ) {
+							mixer = new THREE.AnimationMixer( gltf.scene );
+							var action = mixer.clipAction( gltf.animations[ 0 ] );
 							action.play();
 
-							gltf.scene.traverse(function (child) {
-							if (child.isMesh) {
-								child.castShadow = true; 
-									child.receiveShadow = true; 
-								model = child;
-							}
-							
-							})
-						    model = gltf.scene;
-							obj = gltf.scene;
-							model.position.set( 1.7, -1.99, -3.9);
-							model.scale.set( 0, 0, 0);
-							model.rotation.set(2 * Math.PI * (20/ 360), 2 * Math.PI * (-15 / 360), 2 * Math.PI * (0 / 360))
-							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
-							//console.log(gltf.scene)
-							//cubes77.push(gltf.scene)
-							console.log(model)
-							
-							scene.add( model );
-							GlbObject7 = model ;
-							console.log('Default OBJ -> ' + GlbObject7.name)
-							document.getElementById("info3").innerHTML = GlbObject7.name
-							render();
 
-						} );
-
-					} );
-				//
-
-				new RGBELoader()
-					.setPath( 'textures/equirectangular/' )
-					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
-
-						texture.mapping = THREE.EquirectangularReflectionMapping;
-
-						//scene.background = texture;
-						scene.environment = texture;
-
-						render();
-
-						// model
-
-						const loader = new GLTFLoader().setPath( 'models/gltf/kizilay/stone_frame/' );
-						loader.load( 'scene.gltf', function ( gltf ) {
-
-							gltf.scene.traverse(function (child) {
-							if (child.isMesh) {
-									child.castShadow = true; 
-									child.receiveShadow = true; 
-									model = child;
-								}
-							
-							})
-							gltf.scene.castShadow = true; //default is false
-							gltf.scene.receiveShadow = true; //default
-
-						    model = gltf.scene;
-							obj = gltf.scene;
-							model.position.set( -3.67, -0.6, -4.5 );
-							model.scale.set( 0, 0, 0);
-							model.rotation.set(2 * Math.PI * (60 / 360), 2 * Math.PI * (180 / 360), 2 * Math.PI * (90 / 360))
-							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
-							//console.log(gltf.scene)
-							//cubes77.push(gltf.scene)
-							console.log(model)
-							
-							scene.add( model );
-							GlbObject5 = model ;
-							console.log('Default OBJ -> ' + GlbObject5.name)
-							document.getElementById("info3").innerHTML = GlbObject5.name
-							render();
-
-						} );
-
-					} );
-				//
-
-
-
-				new RGBELoader(loadingManager)
-					.setPath( 'textures/equirectangular/' )
-					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
-
-						texture.mapping = THREE.EquirectangularReflectionMapping;
-
-						//scene.background = texture;
-						scene.environment = texture;
-
-						render();
-
-						// model
-
-						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/medieval_mortier/' );
-						loader.load( 'scene.gltf', function ( gltf ) {
-
-							gltf.scene.traverse(function (child) {
-							if (child.isMesh) {
-									child.castShadow = true; 
-									child.receiveShadow = true; 
-								    model = child;
-								}
-							
-							})
-						    model = gltf.scene;
-							obj = gltf.scene;
-							model.position.set( 3, -1, -9.5);
-							model.scale.set( 0, 0, 0);
-							model.rotation.set(0,-40,0)
-							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
-							//console.log(gltf.scene)
-							//cubes77.push(gltf.scene)
-							console.log(model)
-							
-							scene.add( model );
-							GlbObject2 = model ;
-							console.log('Default OBJ -> ' + GlbObject2.name)
-							document.getElementById("info3").innerHTML = GlbObject2.name
-							render();
-
-						} );
-
-					} );
-				//
-
-				const loader = new FBXLoader(loadingManager);
-				loader.load( 'models/gltf/kizilay/antitank/antitank2.fbx', function ( object ) {
-
-					mixer = new THREE.AnimationMixer( object );
-
-					const action = mixer.clipAction( object.animations[ 0 ] );
-					action.play();
-
-					object.traverse( function ( child ) {
-
-						if ( child.isMesh ) {
-
-							child.castShadow = true; 
-							child.receiveShadow = true; 
-								
-
-						}
-
-					} );
-
-					object.position.set( -0.9, -1.5, -5.5);
-					object.scale.set( 0, 0, 0);
-					object.rotation.set(0,20,0)
-					GlbObject3 = object ;
-					scene.add( object );
-					document.getElementById("info3").innerHTML = GlbObject3.name
-
-				} );
-
-				new RGBELoader(loadingManager)
-					.setPath( 'textures/equirectangular/' )
-					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
-
-						texture.mapping = THREE.EquirectangularReflectionMapping;
-
-						//scene.background = texture;
-						scene.environment = texture;
-
-						render();
-
-						// model
-
-						const loader3 = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/new_plane/' );
-						loader3.load( 'scene.gltf', function ( gltf ) {
-							mixer3 = new THREE.AnimationMixer( gltf.scene );
-							var action2 = mixer3.clipAction( gltf.animations[ 0 ] );
-							action2.play();
 							gltf.scene.traverse(function (child) {
 							if (child.isMesh) {
 									child.castShadow = true; 
@@ -930,106 +656,19 @@
 							
 							scene.add( model );
 							model.add(sound2)
-							GlbObject8 = model ;
-							console.log('Default OBJ -> ' + GlbObject8.name)
-							document.getElementById("info3").innerHTML = GlbObject8.name
+							GlbObject1 = model ;
+							console.log('Default OBJ -> ' + GlbObject1.name)
+							document.getElementById("info3").innerHTML = GlbObject1.name
 							render();
 
 						} );
 
 					} );
 				//
+				
 
 
-				new RGBELoader(loadingManager)
-					.setPath( 'textures/equirectangular/' )
-					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
-
-						texture.mapping = THREE.EquirectangularReflectionMapping;
-
-						//scene.background = texture;
-						scene.environment = texture;
-
-						render();
-
-						// model
-
-						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/iceland_landscape/' );
-						loader.load( 'scene.gltf', function ( gltf ) {
-
-						
-							gltf.scene.traverse(function (child) {
-							if (child.isMesh) {
-									model = child;
-									child.castShadow = false; 
-									child.receiveShadow = true; 
-								}
-							
-							})
-						    model = gltf.scene;
-							obj = gltf.scene;
-							model.position.set( 0, -1.9, -2.9);
-							model.scale.set( 0, 0, 0);
-							model.rotation.set(0,-40,0)
-							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
-							//console.log(gltf.scene)
-							//cubes77.push(gltf.scene)
-							console.log(model)
-							
-							scene.add( model );
-							GlbObject4 = model ;
-							console.log('Default OBJ -> ' + GlbObject4.name)
-							document.getElementById("info3").innerHTML = GlbObject4.name
-							render();
-						} );
-
-					} );
-
-
-					new RGBELoader(loadingManager)
-					.setPath( 'textures/equirectangular/' )
-					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
-
-						texture.mapping = THREE.EquirectangularReflectionMapping;
-
-						//scene.background = texture;
-						scene.environment = texture;
-
-						render();
-
-						// model
-
-						const loader = new GLTFLoader(loadingManager).setPath( 'models/gltf/kizilay/military_strecher/' );
-						loader.load( 'scene.gltf', function ( gltf ) {
-
-						
-							gltf.scene.traverse(function (child) {
-							if (child.isMesh) {
-									model = child;
-									child.castShadow = false; 
-									child.receiveShadow = true; 
-								}
-							
-							})
-						    model = gltf.scene;
-							obj = gltf.scene;
-							model.position.set( 0, -1.7, -1.5);
-							model.scale.set( 0, 0, 0);
-							model.rotation.set(0,-40,0)
-							//mesh.quaternion.setFromRotationMatrix(; controller.matrixWorld );
-							//console.log(gltf.scene)
-							//cubes77.push(gltf.scene)
-							console.log(model)
-							
-							scene.add( model );
-							GlbObject9 = model ;
-							console.log('Default OBJ -> ' + GlbObject9.name)
-							document.getElementById("info3").innerHTML = GlbObject9.name
-							render();
-						} );
-
-					} );
-
+					
 					//initAudio()
 				// // create an AudioListener and add it to the camera
 				// const listener = new THREE.AudioListener();
@@ -1088,110 +727,9 @@
 						.start();
 						
 
-					new TWEEN.Tween( GlbObject2.scale )
-						.to( { x: 0.01, y: 0.01, z: 0.01 }, duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.onUpdate( render )
-						.start();
-
-					new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-
-					new TWEEN.Tween( GlbObject3.scale )
-						.to( { x: 1, y: 1, z: 1 }, duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.onUpdate( render )
-						.start();
-
-					new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
 
 
-					new TWEEN.Tween( GlbObject4.scale )
-						.to( { x: 5, y: 5, z: 5 }, duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.onUpdate( render )
-						.start();
-
-					new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-
-
-					new TWEEN.Tween( GlbObject5.scale )
-						.to( { x: 0.054, y: 0.054, z: 0.054 }, duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.onUpdate( render )
-						.start();
-
-					new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-
-					new TWEEN.Tween( GlbObject6.scale )
-						.to( { x: 0.5, y: 0.5, z: 0.5 }, duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.onUpdate( render )
-						.start();
-
-					new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-					
-					new TWEEN.Tween( GlbObject7.scale )
-						.to( { x: 0.5, y: 0.5, z: 0.5 }, duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.onUpdate( render )
-						.start();
-
-					new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-					
-
-					new TWEEN.Tween( GlbObject8.scale )
-					.to( { x: 1, y: 1, z: 1 }, duration )
-					.easing( TWEEN.Easing.Exponential.InOut )
-					.onUpdate( render )
-					.start();
-
-					new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-
-
-					new TWEEN.Tween( GlbObject9.scale )
-					.to( { x: 0.5, y: 0.5, z: 0.5 }, duration )
-					.easing( TWEEN.Easing.Exponential.InOut )
-					.onUpdate( render )
-					.start();
-
-					new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-
-
-					new TWEEN.Tween( videoTextureLayer.scale )
-						.to( { x: 1.23, y: 1.47, z: 1.4 }, duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.onUpdate( render )
-						.start();
-
-					new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-
+				
 
 					
 			}
@@ -1200,8 +738,7 @@
 			function animate() {
 				const delta = clock.getDelta();
 				if ( mixer ) mixer.update( delta );
-				if ( mixer2 ) mixer2.update( delta );
-				if ( mixer3 ) mixer3.update( delta );
+
 				requestAnimationFrame( animate );
                 TWEEN.update();
 				// mesh.rotation.x += 0.005;
